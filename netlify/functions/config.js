@@ -7,12 +7,20 @@ const headers = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+function shopStore() {
+  return getStore({
+    name: "shop",
+    siteID: process.env.BLOBS_SITE_ID,
+    token: process.env.BLOBS_TOKEN,
+  });
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers, body: "" };
   }
 
-  const store = getStore("shop");
+  const store = shopStore();
 
   if (event.httpMethod === "GET") {
     const cfg = await store.get("config", { type: "json" });
