@@ -7,6 +7,14 @@ const headers = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+function membersStore() {
+  return getStore({
+    name: "members",
+    siteID: process.env.BLOBS_SITE_ID,
+    token: process.env.BLOBS_TOKEN,
+  });
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers, body: "" };
@@ -28,7 +36,7 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: "missing id" }) };
   }
 
-  const store = getStore("members");
+  const store = membersStore();
   const member = await store.get(id, { type: "json" });
   if (!member) {
     return { statusCode: 404, headers, body: JSON.stringify({ error: "not found" }) };
