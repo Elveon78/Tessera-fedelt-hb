@@ -14,12 +14,20 @@ const headers = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+function membersStore() {
+  return getStore({
+    name: "members",
+    siteID: process.env.BLOBS_SITE_ID,
+    token: process.env.BLOBS_TOKEN,
+  });
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers, body: "" };
   }
 
-  const store = getStore("members");
+  const store = membersStore();
 
   if (event.httpMethod === "GET") {
     const id = ((event.queryStringParameters && event.queryStringParameters.id) || "")
